@@ -78,7 +78,7 @@ EXPOSE 443
 VOLUME /etc/letsencrypt
 
 COPY haproxy.cfg /usr/local/etc/haproxy/haproxy.cfg
-RUN sed s/REPLACE_BACKEND/$BACKEND_NAME/g /usr/local/etc/haproxy/haproxy.cfg \
-	&&  s/REPLACE_PORT/$BACKEND_PORT/g /usr/local/etc/haproxy/haproxy.cfg
+CMD sed -ie s/REPLACE_BACKEND/${BACKEND_NAME}/g /usr/local/etc/haproxy/haproxy.cfg \
+	&&  sed -ie s/REPLACE_PORT/${BACKEND_PORT}/g /usr/local/etc/haproxy/haproxy.cfg
 
 ENTRYPOINT ["/bootstrap.sh"]
