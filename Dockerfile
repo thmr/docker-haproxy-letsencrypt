@@ -37,7 +37,8 @@ RUN cd /usr/src \
 ENV HAPROXY_MAJOR 1.7
 ENV HAPROXY_VERSION 1.7.2
 ENV HAPROXY_MD5 7330b36f3764ebe409e9305803dc30e2
-
+ENV BACKEND_NAME www
+ENV BACKEND_PORT 80
 
 RUN cd / && curl -SL "http://www.haproxy.org/download/${HAPROXY_MAJOR}/src/haproxy-${HAPROXY_VERSION}.tar.gz" -o haproxy.tar.gz \
 	&& echo "${HAPROXY_MD5}  haproxy.tar.gz" | md5sum -c \
@@ -72,10 +73,11 @@ COPY bootstrap.sh /
 
 RUN mkdir /jail
 
-EXPOSE 80 443
+EXPOSE 443
 
 VOLUME /etc/letsencrypt
-
+RUN sed "s/*REPLACE*/$BACKEND_NAME/g" "haproxy.cfg" \
+	&& "s/*PORT*/$BACKEND_PORT/g" "haproxy.cfg" 
 COPY haproxy.cfg /usr/local/etc/haproxy/haproxy.cfg
 
 ENTRYPOINT ["/bootstrap.sh"]
