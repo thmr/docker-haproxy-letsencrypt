@@ -79,8 +79,8 @@ VOLUME /etc/letsencrypt
 
 COPY haproxy.cfg /usr/local/etc/haproxy/haproxy.cfg
 RUN sed -i \
-		-e "s/REPLACE_BACKEND/$BACKEND_NAME/g" \
-		-e "s/REPLACE_PORT/$BACKEND_PORT/g" \
-		-e /usr/local/etc/haproxy/haproxy.cfg
+		-e "s/REPLACE_BACKEND/{$BACKEND_NAME}/g" \
+		-e "s/REPLACE_PORT/{$BACKEND_PORT}/g" \
+		/usr/local/etc/haproxy/haproxy.cfg
 
 ENTRYPOINT ["/bootstrap.sh"]
