@@ -74,11 +74,7 @@ RUN mkdir /jail
 EXPOSE 443 80
 
 VOLUME /etc/letsencrypt
-
+		
 COPY haproxy.cfg /usr/local/etc/haproxy/haproxy.cfg
-RUN sed -i \
-		-e "s/REPLACE_BACKEND/$SERVICENAME/g" \
-		-e "s/REPLACE_PORT/$SERVICEPORT/g" \
-		/usr/local/etc/haproxy/haproxy.cfg
 
 ENTRYPOINT ["/bootstrap.sh"]
